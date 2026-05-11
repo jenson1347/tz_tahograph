@@ -1,7 +1,8 @@
 import json
 from gigachat.models import Chat
 from gigachat import GigaChat
-
+from router.router import route
+from prompts.sys_prompt import orchestrator_prompts
 
 # Вставь свой токен
 TOKEN = "MDE5ZTExOGYtODI3NS03NmRlLWI1OGEtYjg1YTNlNjkzYjYyOjU5ZTA1NmRiLWEyNGQtNGQzMC1iZDg4LWM5NWRkMGU1NDAzYg=="
@@ -13,27 +14,14 @@ client = GigaChat(
 )
 
 
-SYSTEM_PROMPT = """
-Ты система извлечения заказов.
+def extract(text: str) -> dict:
+    
+    result = route(text)
+    print('ROUTER ANSWER')
+    print(result['intent'])
 
-Верни ТОЛЬКО JSON строго формата:
+    SYSTEM_PROMPT = orchestrator_prompts[result['intent']]
 
-{
-  "intent": "create_order",
-  "items": [
-    {
-      "name": "string",
-      "quantity": number | null
-    }
-  ],
-  "delivery_location": string | null
-}
-
-Никакого текста, объяснений, markdown.
-"""
-
-
-def extract_order(text: str) -> dict:
     response = client.chat(
         Chat(
             messages=[

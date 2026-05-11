@@ -1,18 +1,19 @@
-from services.llm_service import extract_order
-from services.validation_service import validate_create_order
+from services.llm_service import extract
+from services.validation_service import orch_validate
 from services.followup import make_question
-from services.order_service import submit_order
-
-from schemas.order import CreateOrderSchema
+from services.service_orchestrator import orch_services
+from schemas.orchestrator_schemas import orch_schemas
 
 
 def process_message(text: str):
 
-    raw = extract_order(text)
+    raw = extract(text)
     
-    order = CreateOrderSchema(**raw)
+    order = orch_schemas(raw['intent'],**raw)
     
-    result = validate_create_order(order)
+    result = orch_validate(raw['intent'],order)
+    
+    print(raw["intent"])
     
     if not result["is_complete"]:
         question = make_question(result["missing_fields"])
@@ -22,10 +23,10 @@ def process_message(text: str):
             "order_state": order.model_dump()
         }
     
-    response = submit_order(order.model_dump())
+    response = orch_services(raw['intent'],order.model_dump())
     return {
         "status": "submitted",
         "result": response
     }
 
-print(process_message('Добрый день, хочу сделать заказ: 5 кофе и 10 пачек печенья в офис'))
+print(process_message('Забронируй мне отель в Москве'))

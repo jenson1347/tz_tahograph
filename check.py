@@ -1,39 +1,16 @@
-from schemas.order import CreateOrderSchema,OrderItem
-from services.validation_service import validate_create_order
+from router.router import route
 
 
-item1 = OrderItem(
-    name = 'Кофе',
-    quantity=10 
-)
-item2 = OrderItem(
-    name = 'чай',
-    quantity=20 
-)
+def main():
 
-order = CreateOrderSchema(
-    intent = 'create_order',
-    items = [item1,item2]
-    
-)
+    while True:
 
-print(validate_create_order(order))
+        text = input("\nВведите сообщение: ")
 
-from gigachat import GigaChat
+        result = route(text)
+
+        print("\nRESULT:")
+        print(result)
 
 
-# Вставь свой токен
-TOKEN = "MDE5ZTExOGYtODI3NS03NmRlLWI1OGEtYjg1YTNlNjkzYjYyOjU5ZTA1NmRiLWEyNGQtNGQzMC1iZDg4LWM5NWRkMGU1NDAzYg=="
-
-
-client = GigaChat(
-    credentials=TOKEN,
-    verify_ssl_certs=False
-)
-
-
-response = client.chat(
-    "Привет! Ответь коротко."
-)
-
-print(response.choices[0].message.content)
+main()
