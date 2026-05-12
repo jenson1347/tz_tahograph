@@ -17,8 +17,7 @@ client = GigaChat(
 def extract(text: str) -> dict:
     
     result = route(text)
-    print('ROUTER ANSWER')
-    print(result['intent'])
+    print(f"ROUTER ANSWER: {result['intent']}")
 
     SYSTEM_PROMPT = orchestrator_prompts[result['intent']]
 

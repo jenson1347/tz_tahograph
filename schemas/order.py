@@ -19,4 +19,3 @@ class CreateOrderSchema(BaseModel):
     
     items: list[OrderItem]
     
-    delivery_location: Optional[str] = None

@@ -28,13 +28,6 @@ def validate_create_order(
 
             missing_fields.append(
                 f"quantity:{item.name}")
-    
-    if not order.delivery_location:
-
-        missing_fields.append(
-            "delivery_location"
-            )
-
 
     return {
         "is_complete": len(missing_fields) == 0,

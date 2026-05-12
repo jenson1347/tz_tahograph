@@ -13,7 +13,7 @@ def process_message(text: str):
     
     result = orch_validate(raw['intent'],order)
     
-    print(raw["intent"])
+    print(f"LLM classification: {raw['intent']}")
     
     if not result["is_complete"]:
         question = make_question(result["missing_fields"])
@@ -29,4 +29,4 @@ def process_message(text: str):
         "result": response
     }
 
-print(process_message('Забронируй мне отель в Москве'))
+#print(process_message('Забронируй мне отель в Москве'))
